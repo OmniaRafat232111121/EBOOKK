@@ -1,0 +1,20 @@
+import React from "react";
+
+import { Link } from "react-router-dom";
+
+const Navbar = () => {
+  return (
+    <div className="bg-black w-100h-20 text-white flex align-center justify-center">
+      <div>
+        <h1>React Books App</h1>
+      </div>
+      <div>
+        <Link to="/favorites">
+          <h3>Your Favorites</h3>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;

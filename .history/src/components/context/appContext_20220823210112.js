@@ -1,0 +1,51 @@
+import React, {useState, useContext, useEffect,createContext} from 'react';
+import { useCallback } from 'react';
+const URL = "http://openlibrary.org/search.json?title=";
+
+const AppContext = createContext(null);
+
+export const useAppContext = () => {
+
+  const [searchTerm, setSearchTerm] = useState("the lost world");
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [resultTitle, setResultTitle] = useState("");
+  const context = useContext(AppContext);
+
+  if (context === undefined) {
+    throw new Error("Appcontext must be within appContextProvider!");
+  }
+
+  return context;
+};
+
+
+const AppContextProvider = ({ children }) => {
+  const [favorites, setFavorites] = useState([]);
+
+  const addToFavorites = (book) => {
+    const oldFavorites = [...favorites];
+
+    const newFavorites = oldFavorites.concat(book);
+
+    setFavorites(newFavorites);
+  };
+
+  const removeFromFavorites = (id) => {
+    const oldFavorites = [...favorites];
+    const newFavorites = oldFavorites.filter((book) => book.id !== id);
+
+    setFavorites(newFavorites);
+  };
+
+  return (
+    <AppContext.Provider
+      value={{ favorites, addToFavorites, removeFromFavorites,{
+        loading, books, setSearchTerm, resultTitle, setResultTitle, }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+export default AppContextProvider;
